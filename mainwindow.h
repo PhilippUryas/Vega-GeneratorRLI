@@ -20,27 +20,22 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    unsigned getWidth(const QString &filepath);
-    unsigned getHeight(const QString &filepath);
-
-    std::vector<unsigned char> decodeImage(const QString &filepath);
-    void encodeImage(const QString &filepath, std::vector<unsigned char>& image, unsigned width, unsigned height);
-    void chb(std::vector<unsigned char> &image);
-
-    void setImage(const QString &path);
-
-    void doThisShit(const QString &filepath, const QString &savepath, unsigned h, unsigned w);
-
 signals:
     void signalFromPathSlot(const QString &filepath, const QString &savepath);
+
     void signalPathDirSelect(const QString &filepath);
+    void signalSavePathDirSelect(const QString &savepath);
 
 
 private slots:
     void slotPath();
-    void slotInitDoThisShit(const QString &filepath, const QString &savepath);
+    void slotInitSetImage(const QString &filepath, const QString &savepath);
+
     void slotGetPathWithDirSelect();
     void slotSetNameToPathLine(const QString &filepath);
+
+    void slotGetSavePathWithDirSelect();
+    void slotSetNameToSavePathLine(const QString &savepath);
 
 };
 

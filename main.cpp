@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.setFixedSize(335, 157);
-    w.setWindowTitle("PIZDEC");
+    w.setWindowTitle("...");
     w.show();
 
 
