@@ -27,17 +27,16 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    lodepng.cpp \
-    imagelabel.cpp
+    imagelabel.cpp \
+    png.cpp
 
 HEADERS += \
         mainwindow.h \
-    lodepng.h \
-    imagelabel.h
+    imagelabel.h \
+    png.h
 
 FORMS += \
-        mainwindow.ui \
-    form.ui
+        mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

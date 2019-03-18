@@ -28,14 +28,14 @@ MainWindow::~MainWindow() {
 void MainWindow::slotGetSavePathWithDirSelect() {
 
     emit signalSavePathDirSelect(QFileDialog::getSaveFileName(this, tr("Save File"),
-                                                              "/home/test.png",
-                                                              tr("Images (*.png)")));
+                                                              "/home/test.jpg",
+                                                              tr("Images (*.png *.jpg *.bmp)")));
 }
 
 void MainWindow::slotGetPathWithDirSelect() {
 
     emit signalPathDirSelect(QFileDialog::getOpenFileName(this,
-                            tr("Open Image"), "/home", tr("Image Files (*.png)"))); /* *.jpg *.bmp z*/
+                            tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.bmp)"))); /* *.jpg *.bmp z*/
 }
 
 void MainWindow::slotSetNameToSavePathLine(const QString &savepath) {
@@ -51,16 +51,15 @@ void MainWindow::slotSetNameToPathLine(const QString &path) {
 
 void MainWindow::slotPath() {
 
-    qDebug() << "pathSlot";
     emit signalFromPathSlot(ui->pathLineEdit->text(), ui->saveLineEdit->text());
 }
 
 void MainWindow::slotInitSetImage(const QString &filepath, const QString &savepath) {
 
-    qDebug() << filepath;
-    qDebug() << savepath;
+    PNG png(filepath, savepath);
+    png.toPolar();
 
     ImageLabel il(filepath);
-    il.makeImageBlack(savepath, il.getWidth(), il.getHeight());
+   // il.makeImageBlack(savepath, il.getWidth(), il.getHeight());
     il.setImage(savepath);
 }

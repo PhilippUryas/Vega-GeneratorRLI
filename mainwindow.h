@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <vector>
+#include "png.h"
 
 namespace Ui {
 class MainWindow;
