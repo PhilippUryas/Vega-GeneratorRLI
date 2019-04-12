@@ -51,14 +51,15 @@ void MainWindow::slotSetNameToPathLine(const QString &path) {
 
 void MainWindow::slotPath() {
 
-    emit signalFromPathSlot(ui->pathLineEdit->text(), ui->saveLineEdit->text());
+    emit signalFromPathSlot(/*"/home/philipp/Документы/ава.jpg", "/home/philipp/Документы/ava.jpg"*/ui->pathLineEdit->text(), ui->saveLineEdit->text());
 }
 
 void MainWindow::slotInitSetImage(const QString &filepath, const QString &savepath) {
 
     PNG png(filepath, savepath);
-    png.toPolar();
-
+    //png.toPolar();
+    png.toPolar(ui->spinBox->value(), ui->spinBox_2->value());
+    //png.sjatie(ui->spinBox->value());
     ImageLabel il(filepath);
    // il.makeImageBlack(savepath, il.getWidth(), il.getHeight());
     il.setImage(savepath);

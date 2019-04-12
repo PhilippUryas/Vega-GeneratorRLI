@@ -3,13 +3,19 @@
 
 #include "imagelabel.h"
 
-class PNG
+class ImageWorker
 {
 public:
-    PNG(const QString &path, const QString &savepath);
+    ImageWorker(const QString &path, const QString &savepath);
     void toChb();
-    void toPolar();
+    void toPolar(int targetH, int targetW);
+    void toPolarV2();
+    void sjatie(int sj);
+    void billinearInterpolation();
 private:
+
+    void interpolatePixel(double *x, double *y);
+
     QString _filepath;
     QString _savepath;
     QImage _image;

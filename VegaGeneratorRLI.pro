@@ -28,12 +28,12 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     imagelabel.cpp \
-    png.cpp
+    imageworker.cpp
 
 HEADERS += \
         mainwindow.h \
     imagelabel.h \
-    png.h
+    imageworker.h
 
 FORMS += \
         mainwindow.ui

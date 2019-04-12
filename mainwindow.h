@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <vector>
-#include "png.h"
+#include "imageworker.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,7 +26,6 @@ signals:
 
     void signalPathDirSelect(const QString &filepath);
     void signalSavePathDirSelect(const QString &savepath);
-
 
 private slots:
     void slotPath();
