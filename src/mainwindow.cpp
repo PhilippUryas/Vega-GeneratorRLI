@@ -56,9 +56,9 @@ void MainWindow::slotPath() {
 
 void MainWindow::slotInitSetImage(const QString &filepath, const QString &savepath) {
 
-    PNG png(filepath, savepath);
+    ImageWorker png(filepath, savepath);
     //png.toPolar();
-    png.toPolar(ui->spinBox->value(), ui->spinBox_2->value());
+    png.toPolar(ui->spinBox->value());
     //png.sjatie(ui->spinBox->value());
     ImageLabel il(filepath);
    // il.makeImageBlack(savepath, il.getWidth(), il.getHeight());
