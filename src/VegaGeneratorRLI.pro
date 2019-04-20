@@ -27,13 +27,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    imagelabel.cpp \
-    imageworker.cpp
+    imagehandler.cpp \
+    rkrimagehandler.cpp
 
 HEADERS += \
         mainwindow.h \
-    imagelabel.h \
-    imageworker.h
+    imagehandler.h \
+    rkrimagehandler.h
 
 FORMS += \
         mainwindow.ui

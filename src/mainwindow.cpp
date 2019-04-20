@@ -1,8 +1,9 @@
 #include "mainwindow.h"
+#include "rkrimagehandler.h"
 #include "ui_mainwindow.h"
-#include "imagelabel.h"
 #include <QDebug>
 #include <QFileDialog>
+#include <QInputDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,14 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
-    connect(ui->okButton, &QPushButton::released, this, &MainWindow::slotPath);
-    connect(this, &MainWindow::signalFromPathSlot, this, &MainWindow::slotInitSetImage);
-
-    connect(ui->getPathToPathLineEdit, &QPushButton::released, this, &MainWindow::slotGetPathWithDirSelect);
-    connect(this, &MainWindow::signalPathDirSelect, this, &MainWindow::slotSetNameToPathLine);
-
-    connect(ui->getPathToSaveLineEdit, &QPushButton::released, this, &MainWindow::slotGetSavePathWithDirSelect);
-    connect(this, &MainWindow::signalSavePathDirSelect, this, &MainWindow::slotSetNameToSavePathLine);
+    setupButtons();
 }
 
 MainWindow::~MainWindow() {
@@ -25,42 +19,44 @@ MainWindow::~MainWindow() {
     delete ui;   
 }
 
-void MainWindow::slotGetSavePathWithDirSelect() {
+void MainWindow::setupButtons() {
+    connect(ui->selectSourcePathPushButton, &QPushButton::released, this, &MainWindow::setSourcePathSlot);
+    connect(ui->selectSavePathPushButton, &QPushButton::released, this, &MainWindow::setSavePathSlot);
 
-    emit signalSavePathDirSelect(QFileDialog::getSaveFileName(this, tr("Save File"),
-                                                              "/home/test.jpg",
-                                                              tr("Images (*.png *.jpg *.bmp)")));
+    connect(ui->toPolarPushButton, &QPushButton::released, this, &MainWindow::initToPolarSlot);
 }
 
-void MainWindow::slotGetPathWithDirSelect() {
-
-    emit signalPathDirSelect(QFileDialog::getOpenFileName(this,
-                            tr("Open Image"), "/home", tr("Image Files (*.png *.jpg *.bmp)"))); /* *.jpg *.bmp z*/
+void MainWindow::setSourcePathSlot() {
+    ui->sourcePathLineEdit->setText(QFileDialog::getOpenFileName(this, tr("Select image"),
+                                                                 "/", tr("*png *jpg *bmp")));
 }
 
-void MainWindow::slotSetNameToSavePathLine(const QString &savepath) {
-
-    ui->saveLineEdit->setText(savepath);
+void MainWindow::setSavePathSlot() {
+    ui->savePathLineEdit->setText(QFileDialog::getSaveFileName(this, tr("Save image"),
+                                                               "/", tr("*png *jpg *bmp")));
 }
 
-void MainWindow::slotSetNameToPathLine(const QString &path) {
+void MainWindow::initToPolarSlot() {
 
-    ui->pathLineEdit->setText(path);
-}
+    bool okH = false;
+    bool okW = false;
+    int targetH = QInputDialog::getInt(this, tr("Target Heigth"),
+                                    tr("Target Heigth: "), 0, 0, 1000000, 1, &okH);
+    int targetW = QInputDialog::getInt(this, tr("Target width"),
+                                    tr("Target width: "), 0, 0, 1000000, 1, &okW);
+    if(okH && okW) {
 
+        ImageParams ip;
+        ip.path = ui->sourcePathLineEdit->text();
+        ip.imageType = RKR;
+        ip.pixelType = USHORT;
+        ip.targetWidth = targetW;
+        ip.targetHeight = targetH;
 
-void MainWindow::slotPath() {
+        RKRImageHandler rkrImage(ip);
+        rkrImage.makeRKR();
+        rkrImage.saveImage(ui->savePathLineEdit->text());
+        rkrImage.saveToRLI("/home/philipp/Документы/test.dat");
+    }
 
-    emit signalFromPathSlot(/*"/home/philipp/Документы/ава.jpg", "/home/philipp/Документы/ava.jpg"*/ui->pathLineEdit->text(), ui->saveLineEdit->text());
-}
-
-void MainWindow::slotInitSetImage(const QString &filepath, const QString &savepath) {
-
-    ImageWorker png(filepath, savepath);
-    //png.toPolar();
-    png.toPolar(ui->spinBox->value());
-    //png.sjatie(ui->spinBox->value());
-    ImageLabel il(filepath);
-   // il.makeImageBlack(savepath, il.getWidth(), il.getHeight());
-    il.setImage(savepath);
 }
