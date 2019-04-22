@@ -5,7 +5,8 @@
 #include <QImage>
 #include <cmath>
 
-//;
+/* С кодом беда - будем править
+ * */
 
 class RKRImageHandler : public ImageHandler
 {

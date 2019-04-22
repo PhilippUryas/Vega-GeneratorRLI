@@ -4,6 +4,10 @@
 #include <QTextStream>
 #include <QDebug>
 
+#ifndef M_PI
+   #define M_PI 3.14159265358979323846
+#endif
+
 RKRImageHandler::RKRImageHandler(ImageParams& imageParams) :
                 ImageHandler(imageParams) {
 }
@@ -15,7 +19,10 @@ RKRImageHandler::~RKRImageHandler() {
 void RKRImageHandler::makeRKR() {
 
     toPolar();
-    resizeByNearNeighboor();
+
+    /* НЕ нужен */
+    //resizeByNearNeighboor();
+
     rgbToGrayScale();
 }
 
@@ -38,7 +45,7 @@ void RKRImageHandler::rgbToGrayScale() {
 void RKRImageHandler::toPolar() {
 
     unsigned heightTransform = _imageParams->targetHeight;
-    unsigned widthTransform = _image.width()/2;
+    unsigned widthTransform = _imageParams->targetWidth;
 
     int centerX = _image.width()/2;
     int centerY = _image.height()/2;
@@ -49,7 +56,7 @@ void RKRImageHandler::toPolar() {
     for(int f = 0; f < heightTransform; f++) {
         for(int r = 0; r < widthTransform; r++) {
 
-                float fi = float(f)/_imageParams->targetHeight*2*M_PI;
+                float fi = float(f)/(heightTransform - 1) * 2*M_PI;
 
                 int x = centerX + r*cos(fi);
                 int y = centerY - r*sin(fi);
@@ -60,7 +67,7 @@ void RKRImageHandler::toPolar() {
 
         }
     }
-
+    //polarImage.save("E:/ress.bmp");
     _image = polarImage;
 }
 
@@ -85,13 +92,17 @@ void RKRImageHandler::saveImage(const QString &savePath) {
 void RKRImageHandler::saveToRLI(const QString &savePath) {
     QFile file(savePath);
     file.open(QIODevice::WriteOnly);
-    QTextStream fileStream(&file);
+    //QTextStream fileStream(&file);
 
-    for(int x = 0; x < _image.width(); x++) {
-        for(int y = 0; y < _image.height(); y++) {
-    
+    /* "Строка" файла - один азимут
+     * (последовательно пишем азимуты, а не дальности)
+     * */
+    for(int y = 0; y < _image.height(); y++) {
+        for(int x = 0; x < _image.width(); x++) {
             QColor clrCurrent(_image.pixel(x, y));
-            fileStream << setUshortPixelFormat((clrCurrent.red()+clrCurrent.green()+clrCurrent.blue())/3); /// 255.0 * std::numeric_limits<unsigned short>::max();
+            unsigned short value = (clrCurrent.red()+clrCurrent.green()+clrCurrent.blue())/3;
+            value = setUshortPixelFormat(value);
+            file.write((const char*) &value, sizeof(value));
         }
     }
 

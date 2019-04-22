@@ -56,7 +56,7 @@ void MainWindow::initToPolarSlot() {
         RKRImageHandler rkrImage(ip);
         rkrImage.makeRKR();
         rkrImage.saveImage(ui->savePathLineEdit->text());
-        rkrImage.saveToRLI("/home/philipp/Документы/test.dat");
+        rkrImage.saveToRLI("E:/1200x2500RKR_Vorkuta.dat");     //!!!
     }
 
 }
