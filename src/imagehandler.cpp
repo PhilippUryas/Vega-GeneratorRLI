@@ -8,8 +8,8 @@ ImageHandler::ImageHandler(ImageParams& imageParams) {
 
 ImageHandler::~ImageHandler(){}
 
-ushort ImageHandler::setUshortPixelFormat(QRgb value) {
-    return value / 255.0 * std::numeric_limits<unsigned short>::max();
+ushort ImageHandler::setUshortPixelFormat(ushort value) {
+    return (value / 255.f) * std::numeric_limits<unsigned short>::max();
    // _image.pixel(x, y) / 255.0 * std::numeric_limits<unsigned short>::max()
 }
 

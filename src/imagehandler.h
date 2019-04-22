@@ -39,7 +39,7 @@ public:
     virtual void saveImage(const QString &savePath) = 0;
     virtual void saveToRLI(const QString &savePath) = 0;
 protected:
-    ushort setUshortPixelFormat(QRgb value);
+    ushort setUshortPixelFormat(ushort value);
 
     QImage _image;
     ImageParams* _imageParams;
