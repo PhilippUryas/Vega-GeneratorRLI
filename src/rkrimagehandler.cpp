@@ -9,35 +9,23 @@
 #endif
 
 RKRImageHandler::RKRImageHandler(ImageParams& imageParams) :
-                ImageHandler(imageParams) {
-}
+                ImageHandler(imageParams) {}
 
-RKRImageHandler::~RKRImageHandler() {
-
-}
-
-void RKRImageHandler::makeRKR() {
-
-    toPolar();
-
-    /* НЕ нужен */
-    //resizeByNearNeighboor();
-
-    rgbToGrayScale();
-}
+RKRImageHandler::~RKRImageHandler() {}
 
 void RKRImageHandler::rgbToGrayScale() {
 
     for (int row = 0; row < _image.width(); row++) {
         for (int col = 0; col < _image.height(); col++)
         {
-            QColor clrCurrent(_image.pixel( row, col ));
+            QColor clrCurrent(_image.pixel(row, col));
 
-            QRgb chbColor;
-            int grayScale = 0.299*clrCurrent.red() + 0.587*clrCurrent.green() + 0.114*clrCurrent.blue();
-            chbColor = qRgb(grayScale, grayScale, grayScale);
+            QRgb grayScaleColor;
+            int grayScale = 0.299*clrCurrent.red()
+                    + 0.587*clrCurrent.green() + 0.114*clrCurrent.blue();
+            grayScaleColor = qRgb(grayScale, grayScale, grayScale);
 
-            _image.setPixel(row, col, chbColor);
+            _image.setPixel(row, col, grayScaleColor);
         }
     }
 }
@@ -71,26 +59,11 @@ void RKRImageHandler::toPolar() {
     _image = polarImage;
 }
 
-void RKRImageHandler::resizeByNearNeighboor() {
-
-    QImage newCartImage(_imageParams->targetWidth, _image.height(), QImage::Format_RGB32);
-    for(int y = 0; y < _image.height(); y++) {
-        for(int x = 0; x < _imageParams->targetHeight; x++) {
-            unsigned newX = float(x)/_imageParams->targetWidth*(_image.width()-1);
-            newCartImage.setPixel(x, y, _image.pixel(newX, y));
-        }
-    }
-
-    _image = newCartImage;
-}
-
-
-void RKRImageHandler::saveImage(const QString &savePath) {
-    _image.save(savePath);
-}
-
-void RKRImageHandler::saveToRLI(const QString &savePath) {
-    QFile file(savePath);
+QImage RKRImageHandler::makeRLI() {
+    toPolar();
+    rgbToGrayScale();
+    qDebug() << "IMHERE";
+    QFile file(_imageParams->savePathForDatFile);
     file.open(QIODevice::WriteOnly);
     //QTextStream fileStream(&file);
 
@@ -107,5 +80,6 @@ void RKRImageHandler::saveToRLI(const QString &savePath) {
     }
 
     file.close();
-}
 
+    return _image;
+}

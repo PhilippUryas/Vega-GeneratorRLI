@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 MainWindow::~MainWindow() {
-
     delete ui;   
 }
 
@@ -28,18 +27,19 @@ void MainWindow::setupButtons() {
 
 void MainWindow::setSourcePathSlot() {
     ui->sourcePathLineEdit->setText(QFileDialog::getOpenFileName(this, tr("Select image"),
-                                                                 "/", tr("*png *jpg *bmp")));
+                                                                 "/", tr("*.png *.jpg *.bmp")));
 }
 
 void MainWindow::setSavePathSlot() {
     ui->savePathLineEdit->setText(QFileDialog::getSaveFileName(this, tr("Save image"),
-                                                               "/", tr("*png *jpg *bmp")));
+                                                               "/", tr("*.png *.jpg *.bmp")));
 }
 
 void MainWindow::initToPolarSlot() {
 
     bool okH = false;
     bool okW = false;
+
     int targetH = QInputDialog::getInt(this, tr("Target Heigth"),
                                     tr("Target Heigth: "), 0, 0, 1000000, 1, &okH);
     int targetW = QInputDialog::getInt(this, tr("Target width"),
@@ -47,16 +47,18 @@ void MainWindow::initToPolarSlot() {
     if(okH && okW) {
 
         ImageParams ip;
-        ip.path = ui->sourcePathLineEdit->text();
+        ip.sourceImagePath = ui->sourcePathLineEdit->text();
+        ip.savePathForDatFile = QFileDialog::getSaveFileName(this, tr("Save .dat file"),
+                                                              "/", tr("*.dat"));
         ip.imageType = RKR;
         ip.pixelType = USHORT;
         ip.targetWidth = targetW;
         ip.targetHeight = targetH;
 
-        RKRImageHandler rkrImage(ip);
-        rkrImage.makeRKR();
-        rkrImage.saveImage(ui->savePathLineEdit->text());
-        rkrImage.saveToRLI("E:/1200x2500RKR_Vorkuta.dat");     //!!!
+        ImageHandler *rkrImage = ImageHandler::create(ip);
+        QImage image = rkrImage->makeRLI();
+        image.save(ui->savePathLineEdit->text());
+
     }
 
 }

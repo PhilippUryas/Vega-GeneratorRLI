@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <vector>
+#include <QThread>
 
 namespace Ui {
 class MainWindow;
@@ -19,14 +20,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
-
     void setupButtons();
 
 private slots:
     void setSourcePathSlot();
     void setSavePathSlot();
     void initToPolarSlot();
-
 
 };
 
