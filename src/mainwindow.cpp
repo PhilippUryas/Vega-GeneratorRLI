@@ -21,7 +21,8 @@ MainWindow::~MainWindow() {
 
 void MainWindow::setupButtons() {
     connect(ui->selectSourcePathButton, &QPushButton::released, this, &MainWindow::setSourcePathSlot);
-    connect(ui->selectDatSavePathLineEdit, &QPushButton::released, this, &MainWindow::setSavePathSlot);
+    connect(ui->selectSaveImagePathButton, &QPushButton::released, this, &MainWindow::setSaveImagePathSlot);
+    connect(ui->selectDatSavePathLineEdit, &QPushButton::released, this, &MainWindow::setDatSavePathSlot);
 
     connect(ui->makeRLIButton, &QPushButton::released, this, &MainWindow::initToPolarSlot);
 }
@@ -31,9 +32,14 @@ void MainWindow::setSourcePathSlot() {
                                                                  "/", tr("*.png *.jpg *.bmp")));
 }
 
-void MainWindow::setSavePathSlot() {
+void MainWindow::setSaveImagePathSlot() {
+    ui->saveImageLineEdit->setText(QFileDialog::getSaveFileName(this, tr("Save image path"),
+                                                                "/", tr("*.png *.jpg *.bmp")));
+}
+
+void MainWindow::setDatSavePathSlot() {
     ui->datFileSavePathLineEdit->setText(QFileDialog::getSaveFileName(this, tr("Save image"),
-                                                               "/", tr("*.png *.jpg *.bmp")));
+                                                               "/", tr("*.dat")));
 }
 
 void MainWindow::initToPolarSlot() {
@@ -49,31 +55,32 @@ void MainWindow::initToPolarSlot() {
 
    ImageHandler *rliImage = ImageHandler::create(ip);
    QImage image = rliImage->makeRLI();
+   image.save(ui->saveImageLineEdit->text());
 
 }
 
 
 
 ImageType MainWindow::imageTypeParse() {
-    if(ui->imageTypeComboBox->count() == 0) {
+    if(ui->imageTypeComboBox->currentText() == "RKR") {
         return RKR;
     }
-    else if(ui->imageTypeComboBox->count() == 1) {
+    else if(ui->imageTypeComboBox->currentText() == "SRLI") {
         return SRLI;
     }
-    else if(ui->imageTypeComboBox->count() == 2) {
+    else if(ui->imageTypeComboBox->currentText() == "RRLI") {
         return RRLI;
     }
 }
 
 PixelType MainWindow::pixelTypeParse() {
-    if(ui->pixelTypeComboBox->count() == 0) {
+    if(ui->pixelTypeComboBox->currentText() == "USHORT") {
         return USHORT;
     }
-    else if(ui->pixelTypeComboBox->count() == 1) {
+    else if(ui->pixelTypeComboBox->currentText() == "UINT") {
         return UINT;
     }
-    else if(ui->pixelTypeComboBox->count() == 2) {
+    else if(ui->pixelTypeComboBox->currentText() == "FLOAT") {
         return FLOAT;
     }
 }

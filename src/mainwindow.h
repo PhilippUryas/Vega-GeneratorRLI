@@ -28,7 +28,9 @@ private:
 
 private slots:
     void setSourcePathSlot();
-    void setSavePathSlot();
+    void setSaveImagePathSlot();
+    void setDatSavePathSlot();
+
     void initToPolarSlot();
 
 };
