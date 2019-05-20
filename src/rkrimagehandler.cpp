@@ -1,4 +1,4 @@
-#include "rkrimagehandler.h"
+ #include "rkrimagehandler.h"
 
 #include <QFile>
 #include <QTextStream>
@@ -60,6 +60,7 @@ void RKRImageHandler::toPolar() {
 }
 
 QImage RKRImageHandler::makeRLI() {
+    //thread->start();
     toPolar();
     rgbToGrayScale();
     qDebug() << "IMHERE";
@@ -80,6 +81,8 @@ QImage RKRImageHandler::makeRLI() {
     }
 
     file.close();
+
+    //thread->quit();
 
     return _image;
 }

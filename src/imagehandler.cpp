@@ -5,6 +5,7 @@ ImageHandler::ImageHandler(ImageParams& imageParams) {
 
     _image = image;
     _imageParams = &imageParams;
+    //thread = new QThread();
 }
 
 ImageHandler::~ImageHandler(){}

@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QFileDialog>
 #include <QInputDialog>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,10 +20,10 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::setupButtons() {
-    connect(ui->selectSourcePathPushButton, &QPushButton::released, this, &MainWindow::setSourcePathSlot);
-    connect(ui->selectSavePathPushButton, &QPushButton::released, this, &MainWindow::setSavePathSlot);
+    connect(ui->selectSourcePathButton, &QPushButton::released, this, &MainWindow::setSourcePathSlot);
+    connect(ui->selectDatSavePathLineEdit, &QPushButton::released, this, &MainWindow::setSavePathSlot);
 
-    connect(ui->toPolarPushButton, &QPushButton::released, this, &MainWindow::initToPolarSlot);
+    connect(ui->makeRLIButton, &QPushButton::released, this, &MainWindow::initToPolarSlot);
 }
 
 void MainWindow::setSourcePathSlot() {
@@ -31,34 +32,48 @@ void MainWindow::setSourcePathSlot() {
 }
 
 void MainWindow::setSavePathSlot() {
-    ui->savePathLineEdit->setText(QFileDialog::getSaveFileName(this, tr("Save image"),
+    ui->datFileSavePathLineEdit->setText(QFileDialog::getSaveFileName(this, tr("Save image"),
                                                                "/", tr("*.png *.jpg *.bmp")));
 }
 
 void MainWindow::initToPolarSlot() {
 
-    bool okH = false;
-    bool okW = false;
 
-    int targetH = QInputDialog::getInt(this, tr("Target Heigth"),
-                                    tr("Target Heigth: "), 0, 0, 1000000, 1, &okH);
-    int targetW = QInputDialog::getInt(this, tr("Target width"),
-                                    tr("Target width: "), 0, 0, 1000000, 1, &okW);
-    if(okH && okW) {
+   ImageParams ip;
+   ip.sourceImagePath = ui->sourcePathLineEdit->text();
+   ip.savePathForDatFile = ui->datFileSavePathLineEdit->text();
+   ip.imageType = imageTypeParse();
+   ip.pixelType = pixelTypeParse();
+   ip.targetWidth = ui->targetWidthComboBox->value();
+   ip.targetHeight = ui->targetHeigthComboBox->value();
 
-        ImageParams ip;
-        ip.sourceImagePath = ui->sourcePathLineEdit->text();
-        ip.savePathForDatFile = QFileDialog::getSaveFileName(this, tr("Save .dat file"),
-                                                              "/", tr("*.dat"));
-        ip.imageType = RKR;
-        ip.pixelType = USHORT;
-        ip.targetWidth = targetW;
-        ip.targetHeight = targetH;
+   ImageHandler *rliImage = ImageHandler::create(ip);
+   QImage image = rliImage->makeRLI();
 
-        ImageHandler *rkrImage = ImageHandler::create(ip);
-        QImage image = rkrImage->makeRLI();
-        image.save(ui->savePathLineEdit->text());
+}
 
+
+
+ImageType MainWindow::imageTypeParse() {
+    if(ui->imageTypeComboBox->count() == 0) {
+        return RKR;
     }
+    else if(ui->imageTypeComboBox->count() == 1) {
+        return SRLI;
+    }
+    else if(ui->imageTypeComboBox->count() == 2) {
+        return RRLI;
+    }
+}
 
+PixelType MainWindow::pixelTypeParse() {
+    if(ui->pixelTypeComboBox->count() == 0) {
+        return USHORT;
+    }
+    else if(ui->pixelTypeComboBox->count() == 1) {
+        return UINT;
+    }
+    else if(ui->pixelTypeComboBox->count() == 2) {
+        return FLOAT;
+    }
 }

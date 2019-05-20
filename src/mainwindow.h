@@ -5,6 +5,7 @@
 #include <QString>
 #include <vector>
 #include <QThread>
+#include "imagehandler.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +22,9 @@ public:
 private:
     Ui::MainWindow *ui;
     void setupButtons();
+
+    ImageType imageTypeParse();
+    PixelType pixelTypeParse();
 
 private slots:
     void setSourcePathSlot();

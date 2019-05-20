@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QImage>
+#include <QThread>
 
 enum ImageType {
     RKR = 0,
@@ -32,6 +33,7 @@ struct ImageParams {
 //struct RRLIImageParams : public ImageParams;	//для прямоугольной
 
 class ImageHandler {
+
 public:
     static ImageHandler* create(ImageParams& imageParams);
 
@@ -51,8 +53,9 @@ protected:
 
     QImage _image;
     ImageParams* _imageParams;
-
+    QThread *thread;
 private:
+
 
 };
 #endif // IMAGEHANDLER_H
