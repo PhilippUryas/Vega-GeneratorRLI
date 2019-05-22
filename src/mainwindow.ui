@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>433</width>
-    <height>295</height>
+    <height>202</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -43,7 +43,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Image source:</string>
+            <string>Image source path:</string>
            </property>
           </widget>
          </item>

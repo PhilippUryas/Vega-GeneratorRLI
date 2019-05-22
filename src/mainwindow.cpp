@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QInputDialog>
 #include <QLabel>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -44,7 +45,6 @@ void MainWindow::setDatSavePathSlot() {
 
 void MainWindow::initToPolarSlot() {
 
-
    ImageParams ip;
    ip.sourceImagePath = ui->sourcePathLineEdit->text();
    ip.savePathForDatFile = ui->datFileSavePathLineEdit->text();
@@ -53,13 +53,15 @@ void MainWindow::initToPolarSlot() {
    ip.targetWidth = ui->targetWidthComboBox->value();
    ip.targetHeight = ui->targetHeigthComboBox->value();
 
-   ImageHandler *rliImage = ImageHandler::create(ip);
-   QImage image = rliImage->makeRLI();
-   image.save(ui->saveImageLineEdit->text());
+   if(ip.sourceImagePath.isEmpty() || ip.savePathForDatFile.isEmpty()) {
+       QMessageBox::critical(this, tr("Generator RLI"), tr("Введите путь к исходному файлу и путь для сохранения .dat файла."));
+   } else {
+       ImageHandler *rliImage = ImageHandler::create(ip);
+       QImage image = rliImage->makeRLI();
+       image.save(ui->saveImageLineEdit->text());
+   }
 
 }
-
-
 
 ImageType MainWindow::imageTypeParse() {
     if(ui->imageTypeComboBox->currentText() == "RKR") {

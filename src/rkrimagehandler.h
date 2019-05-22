@@ -14,7 +14,6 @@ public:
     //void saveImage() override;
     QImage makeRLI() override;
 private:
-    void rgbToGrayScale();
     void toPolar();
 };
 

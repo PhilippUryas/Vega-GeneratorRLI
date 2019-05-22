@@ -43,19 +43,13 @@ public:
 protected:
     ImageHandler(ImageParams& imageParams);
 
-    ImageHandler* setPixelFormat();
-
-    //Убрать \/
-    //virtual void saveImage() = 0;
-
     ushort setUshortPixelFormat(ushort value);
     uint setUintPixelFormat(uint value);
+    float setFloatPixelFormat(float value);
+
+    void rgbToGrayScale();
 
     QImage _image;
     ImageParams* _imageParams;
-    QThread *thread;
-private:
-
-
 };
 #endif // IMAGEHANDLER_H

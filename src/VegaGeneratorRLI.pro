@@ -28,12 +28,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     imagehandler.cpp \
-    rkrimagehandler.cpp
+    rkrimagehandler.cpp \
+    rrliimagehandler.cpp \
+    srliimagehandler.cpp
 
 HEADERS += \
         mainwindow.h \
     imagehandler.h \
-    rkrimagehandler.h
+    rkrimagehandler.h \
+    rrliimagehandler.h \
+    srliimagehandler.h
 
 FORMS += \
         mainwindow.ui

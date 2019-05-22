@@ -1,48 +1,32 @@
- #include "rkrimagehandler.h"
-
+#include "rrliimagehandler.h"
 #include <QFile>
-#include <QTextStream>
-#include <QDebug>
+#include <math.h>
 
-#ifndef M_PI
-   #define M_PI 3.14159265358979323846
-#endif
-
-RKRImageHandler::RKRImageHandler(ImageParams& imageParams) :
+RRLIImageHandler::RRLIImageHandler(ImageParams& imageParams) :
                 ImageHandler(imageParams) {}
 
-RKRImageHandler::~RKRImageHandler() {}
+RRLIImageHandler::~RRLIImageHandler() {}
 
-void RKRImageHandler::toPolar() {
-
-    int centerX = _image.width()/2;
-    int centerY = _image.height()/2;
-
+void RRLIImageHandler::resize() {
     QImage polarImage(_imageParams->targetWidth, _imageParams->targetHeight,
                       QImage::Format_RGB32);
 
-    for(int f = 0; f < _imageParams->targetHeight; f++) {
-        for(int r = 0; r < _imageParams->targetWidth; r++) {
+    for(int y = 0; y < _imageParams->targetHeight; y++) {
+        for(int x = 0; x < _imageParams->targetWidth; x++) {
 
-                float fi = float(f)/(_imageParams->targetHeight - 1) * 2*M_PI;
+                unsigned yi = float(y)/ _imageParams->targetHeight * (_image.height() - 1);
+                unsigned xi = float(x)/ _imageParams->targetWidth * (_image.width() - 1);
 
-                int x = centerX + r*cos(fi);
-                int y = centerY - r*sin(fi);
-
-                if(x < _image.width() && y < _image.height() && x >= 0 && y >= 0) {
-                    polarImage.setPixel(r, f, _image.pixel(x, y));
-                }
+                polarImage.setPixel(x, y, _image.pixel(xi, yi));
 
         }
     }
-
     _image = polarImage;
 }
 
-QImage RKRImageHandler::makeRLI() {
-    toPolar();
+QImage RRLIImageHandler::makeRLI() {
     rgbToGrayScale();
-    qDebug() << "IMHERE";
+    resize();
     QFile file(_imageParams->savePathForDatFile);
     file.open(QIODevice::WriteOnly);
 
@@ -68,6 +52,5 @@ QImage RKRImageHandler::makeRLI() {
     }
 
     file.close();
-
     return _image;
 }
