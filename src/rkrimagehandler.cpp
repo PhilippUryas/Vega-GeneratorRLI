@@ -24,7 +24,7 @@ void RKRImageHandler::toPolar() {
     for(int f = 0; f < _imageParams->targetHeight; f++) {
         for(int r = 0; r < _imageParams->targetWidth; r++) {
 
-                float fi = float(f)/(_imageParams->targetHeight - 1) * 2*M_PI;
+                float fi = float(f)/_imageParams->targetHeight * 2*M_PI;
 
                 int x = centerX + r*cos(fi);
                 int y = centerY - r*sin(fi);

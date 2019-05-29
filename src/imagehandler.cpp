@@ -19,8 +19,8 @@ ImageHandler* ImageHandler::create(ImageParams& imageParams) {
         }
 
         case SRLI: {
-            //SRLIImageHandler *srli = new SRLIImageHandler(imageParams);
-            return NULL;
+            SRLIImageHandler *srli = new SRLIImageHandler(imageParams);
+            return srli;
         }
 
         case RRLI: {

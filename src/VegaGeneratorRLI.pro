@@ -30,14 +30,16 @@ SOURCES += \
     imagehandler.cpp \
     rkrimagehandler.cpp \
     rrliimagehandler.cpp \
-    srliimagehandler.cpp
+    srliimagehandler.cpp \
+    imagelabel.cpp
 
 HEADERS += \
         mainwindow.h \
     imagehandler.h \
     rkrimagehandler.h \
     rrliimagehandler.h \
-    srliimagehandler.h
+    srliimagehandler.h \
+    imagelabel.h
 
 FORMS += \
         mainwindow.ui

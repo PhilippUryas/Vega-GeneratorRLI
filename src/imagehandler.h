@@ -25,6 +25,9 @@ struct ImageParams {
     PixelType pixelType;	//тип отсчета
     unsigned targetWidth;	//количество дальностных отсчетов итогового изображения
     unsigned targetHeight;	//количество азимутальных строк итогового изображения
+    //Только для SRLI
+    int SRLIstart;
+    int SRLIend;
 };
 
 /* потом уточним */

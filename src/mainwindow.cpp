@@ -1,3 +1,4 @@
+#include "imagelabel.h"
 #include "mainwindow.h"
 #include "rkrimagehandler.h"
 #include "ui_mainwindow.h"
@@ -53,13 +54,29 @@ void MainWindow::initToPolarSlot() {
    ip.targetWidth = ui->targetWidthComboBox->value();
    ip.targetHeight = ui->targetHeigthComboBox->value();
 
+   if(ip.imageType == SRLI) {
+
+       ip.SRLIstart = QInputDialog::getInt(this, tr("Set start angle"),
+                                            tr("Set start angle: "),0, 0, 360, 1);
+
+       ip.SRLIend = QInputDialog::getInt(this, tr("Set start angle"),
+                                            tr("Set start angle: "),ip.SRLIstart,
+                                            ip.SRLIstart, 360, 1);
+
+   }
+
    if(ip.sourceImagePath.isEmpty() || ip.savePathForDatFile.isEmpty()) {
        QMessageBox::critical(this, tr("Generator RLI"), tr("Введите путь к исходному файлу и путь для сохранения .dat файла."));
    } else {
        ImageHandler *rliImage = ImageHandler::create(ip);
        QImage image = rliImage->makeRLI();
        image.save(ui->saveImageLineEdit->text());
+
+       ImageLabel::setImage(image);
+
    }
+
+
 
 }
 
